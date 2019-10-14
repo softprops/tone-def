@@ -1,0 +1,20 @@
+name: Main
+
+on: push
+
+jobs:
+  shipit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Rust
+        uses: hecrj/setup-rust-action@v1
+      - uses: actions/checkout@v1
+      - name: Publish
+        if: github.ref == 'refs/heads/master'
+        uses: docker://peaceiris/gh-pages:v2.3.1
+        env:
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: ./src
+          PERSONAL_TOKEN: ${{ secrets.GH_PAGES_TOKEN }}
+        with:
+          emptyCommits: true
